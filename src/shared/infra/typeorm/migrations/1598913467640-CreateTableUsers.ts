@@ -31,6 +31,49 @@ export default class CreateTableUsers1598913467640
           },
 
           {
+            name: 'telephone',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'cpfCnpj',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'address',
+            type: 'varchar',
+            isNullable: true,
+          },
+
+          {
+            name: 'neighborhood',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'city',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'uf',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'addressNumber',
+            type: 'varchar',
+            isNullable: true,
+          },
+
+          {
+            name: 'complement',
+            type: 'varchar',
+            isNullable: true,
+          },
+
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
