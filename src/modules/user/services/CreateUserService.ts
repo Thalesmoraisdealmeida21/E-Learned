@@ -24,6 +24,8 @@ class CreateUserService {
   }: IRequest): Promise<User | undefined> {
     const emailExists = await this.usersRepository.findByEmail(email);
 
+    console.log(emailExists);
+
     if (emailExists) {
       throw new AppError('This e-mail already in use');
     }

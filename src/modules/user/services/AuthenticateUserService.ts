@@ -30,7 +30,8 @@ class CreateUserService {
       throw new AppError('This E-mail is not exists', 401);
     }
 
-    const passwordMatched = compare(password, user.password);
+    const passwordMatched = await compare(password, user.password);
+
 
     if (!passwordMatched) {
       throw new AppError('This Password is wrong', 401);
