@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity('courses')
@@ -19,6 +21,16 @@ class Course {
 
   @Column()
   price: number;
+
+  @ManyToMany(() => Course)
+  @JoinTable({
+    name: 'users_courses',
+    joinColumn: {
+      name: 'course_id',
+      referencedColumnName: 'id',
+    },
+  })
+  courses: Course[];
 
   @Column()
   videoLink: string;

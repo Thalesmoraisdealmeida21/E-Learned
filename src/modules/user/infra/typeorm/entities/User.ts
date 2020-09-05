@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import Course from '@modules/course/infra/typeorm/entities/Course';
 
 @Entity('users')
 class User {
@@ -19,6 +22,20 @@ class User {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => Course, { eager: true })
+  @JoinTable({
+    name: 'users_courses',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'course_id',
+      referencedColumnName: 'id',
+    },
+  })
+  courses: Course[];
 
   @CreateDateColumn()
   created_at: Date;

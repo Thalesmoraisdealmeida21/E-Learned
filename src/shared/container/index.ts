@@ -4,7 +4,11 @@ import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
 import UsersRepository from '@modules/user/infra/typeorm/repositories/UsersRepository';
 
 import ICoursesRepository from '@modules/course/repository/ICoursesRepository';
-import CourseRepository from '@modules/course/infra/typeorm/repositories/CoursesRepository';
+import CourseRepository from '@modules/course/infra/typeorm/repositories/CourseRepository';
+
+import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
+import UsersCoursesRepository from '@modules/user/infra/typeorm/repositories/UsersCoursesRepository';
+
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
 import EtherealMailProvider from './providers/MailProvider/implementations/EtherealMailProvider';
 
@@ -16,6 +20,11 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<ICoursesRepository>(
   'CoursesRepository',
   CourseRepository,
+);
+
+container.registerSingleton<IUsersCoursesRepository>(
+  'UsersCoursesRepository',
+  UsersCoursesRepository,
 );
 
 container.registerInstance<IMailProvider>(

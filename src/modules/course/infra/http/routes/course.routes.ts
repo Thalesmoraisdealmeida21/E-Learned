@@ -9,6 +9,11 @@ userRouter.get('/', courseController.index);
 
 export default userRouter;
 
-// Obter um unico curso
+/**
+ * Obter um unico curso
+ *  - mostrar somente se o usuário tem acesso a este curso (vendo na tabela courses_users)
+ * Obter Cursos do usuário
+ *  - Listar todos os cursos que o usuário tenha acesso.
+ */
 // deletar um curso
 // Adicionar um curso ao usuario
