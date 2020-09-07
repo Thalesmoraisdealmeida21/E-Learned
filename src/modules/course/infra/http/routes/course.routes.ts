@@ -2,12 +2,13 @@ import Router from 'express';
 import CourseController from '../controller/CourseController';
 
 const courseController = new CourseController();
-const userRouter = Router();
+const courseRouter = Router();
 
-userRouter.post('/', courseController.create);
-userRouter.get('/', courseController.index);
+courseRouter.post('/', courseController.create);
+courseRouter.get('/', courseController.index);
+courseRouter.get('/:id', courseController.findOne);
 
-export default userRouter;
+export default courseRouter;
 
 /**
  * Obter um unico curso

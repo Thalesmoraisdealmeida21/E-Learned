@@ -13,7 +13,6 @@ export default async function ensureAuthenticate(
   response: Response,
   next: NextFunction,
 ): Promise<void> {
-
   try {
     const authHeader = request.headers.authorization;
 
@@ -31,8 +30,7 @@ export default async function ensureAuthenticate(
     };
 
     return next();
-  } catch(err) {
+  } catch (err) {
     throw new AppError('Invalid JWT Token', 401);
   }
-
 }

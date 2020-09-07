@@ -24,7 +24,7 @@ class UsersCourseRepository implements IUsersCoursesRepository {
   public async updateLimitAccess(id: string): Promise<void> {
     const courseToUpdate = await this.ormRepository.findOne({
       where: {
-        id,
+        course_id: id,
       },
     });
 
@@ -33,8 +33,6 @@ class UsersCourseRepository implements IUsersCoursesRepository {
     const limitAccessUpdate = add(validDate, {
       days: 1,
     });
-
-    console.log(limitAccessUpdate);
 
     await this.ormRepository.save({
       ...courseToUpdate,

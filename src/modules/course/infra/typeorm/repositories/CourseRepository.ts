@@ -29,6 +29,16 @@ class CourseRepository implements ICoursesRepository {
   public async delete(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }
+
+  public async findOne(id: string): Promise<Course | undefined> {
+    const course = await this.ormRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return course;
+  }
 }
 
 export default CourseRepository;
