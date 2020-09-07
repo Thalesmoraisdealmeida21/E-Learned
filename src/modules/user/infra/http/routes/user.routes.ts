@@ -12,5 +12,10 @@ userRouter.post('/', usersController.create);
 
 userRouter.get('/courses', ensureAuthenticate, usersCoursesController.index);
 userRouter.post('/courses', ensureAuthenticate, usersCoursesController.create);
+userRouter.put(
+  '/courses',
+  ensureAuthenticate,
+  usersCoursesController.updateLimit,
+);
 
 export default userRouter;

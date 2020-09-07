@@ -4,6 +4,8 @@ import { injectable, inject } from 'tsyringe';
 // import AppError from '@shared/errors/AppError';
 import UsersCourses from '@modules/user/infra/typeorm/entities/UsersCourses';
 // import { IUsersRepository } from '../repositories/IUsersRepository';
+// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 import IUsersCoursesRepository from '../repositories/IUsersCoursesRepository';
 
 interface IRequest {
@@ -14,26 +16,30 @@ interface IRequest {
 @injectable()
 class CreateUserService {
   constructor(
-    // @inject('UsersRepository')
-    // private usersRepository: IUsersRepository,
-
-    // @inject('CoursesRepository')
-    // private coursesRepository: ICoursesRepository,
-
     @inject('UsersCoursesRepository')
     private usersCoursesRepository: IUsersCoursesRepository,
   ) {}
 
-  public async execute({
-    user_id,
-    course_id,
-  }: IRequest): Promise<UsersCourses | undefined> {
-    const userCourse = await this.usersCoursesRepository.addCourseToUser(
-      user_id,
-      course_id,
+  public async execute(
+    coursesToInsert: IRequest[],
+  ): Promise<UsersCourses[] | undefined> {
+    const coursesIds = coursesToInsert.map(cours => {
+      return cours.course_id;
+    });
+
+    const existentCourses = await this.usersCoursesRepository.findCoursesByIds(
+      coursesIds,
+      coursesToInsert[0].user_id,
     );
 
-    return userCourse;
+    if (existentCourses.length <= 0) {
+      const userCourses = await this.usersCoursesRepository.addCourseToUser(
+        coursesToInsert,
+      );
+      return userCourses;
+    }
+
+    throw new AppError(`You already have this course: ${UsersCourses}`);
   }
 }
 

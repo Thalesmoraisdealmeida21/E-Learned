@@ -1,5 +1,7 @@
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, In } from 'typeorm';
 import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
+import IAddCoursesToUserDTO from '@modules/user/dtos/IAddCoursesToUserDTO';
+import { add } from 'date-fns';
 import UsersCourses from '../entities/UsersCourses';
 
 class UsersCourseRepository implements IUsersCoursesRepository {
@@ -19,18 +21,63 @@ class UsersCourseRepository implements IUsersCoursesRepository {
     return course;
   }
 
-  public async addCourseToUser(
-    user_id: string,
-    course_id: string,
-  ): Promise<UsersCourses> {
-    const userCourse = this.ormRepository.create({
-      course_id,
-      user_id,
+  public async updateLimitAccess(id: string): Promise<void> {
+    const courseToUpdate = await this.ormRepository.findOne({
+      where: {
+        id,
+      },
     });
 
-    await this.ormRepository.save(userCourse);
+    const validDate = new Date();
 
-    return userCourse;
+    const limitAccessUpdate = add(validDate, {
+      days: 1,
+    });
+
+    console.log(limitAccessUpdate);
+
+    await this.ormRepository.save({
+      ...courseToUpdate,
+      limitAccess: limitAccessUpdate,
+    });
+  }
+
+  public async findCoursesByIds(
+    ids: string[],
+    user_id: string,
+  ): Promise<UsersCourses[]> {
+    const coursesFound = await this.ormRepository.find({
+      where: {
+        course_id: In(ids),
+        user_id,
+      },
+    });
+
+    return coursesFound;
+  }
+
+  public async addCourseToUser(
+    dataCourses: IAddCoursesToUserDTO[],
+  ): Promise<UsersCourses[]> {
+    const userCourses = this.ormRepository.create(dataCourses);
+
+    await this.ormRepository.save(userCourses);
+
+    return userCourses;
+  }
+
+  public async findCourseOfUser(
+    user_id: string,
+    course_id: string,
+  ): Promise<UsersCourses[]> {
+    const coursesIds = await this.ormRepository.find({
+      where: {
+        user_id,
+        course_id,
+      },
+    });
+
+    return coursesIds;
   }
 }
 

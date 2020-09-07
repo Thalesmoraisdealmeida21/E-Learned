@@ -17,6 +17,9 @@ class UsersCourses {
   @Column()
   course_id: string;
 
+  @Column()
+  limitAccess: Date;
+
   @CreateDateColumn()
   created_at: Date;
 

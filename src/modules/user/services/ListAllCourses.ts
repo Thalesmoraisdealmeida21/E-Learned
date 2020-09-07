@@ -31,6 +31,8 @@ class CreateUserService {
     //   throw new AppError("Doe's not exist cours for this user");
     // }
 
+    delete coursesUser?.password;
+
     return coursesUser;
   }
 }
