@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
+import Course from '@modules/course/infra/typeorm/entities/Course';
 import ICoursesRepository from '../repository/ICoursesRepository';
-import Course from '../infra/typeorm/entities/Course';
 
 interface IRequest {
   course_id: string;
