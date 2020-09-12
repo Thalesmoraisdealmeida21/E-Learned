@@ -1,11 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 
-// import ICoursesRepository from '@modules/course/repository/ICoursesRepository';
-// import AppError from '@shared/errors/AppError';
-// import UsersCourses from '@modules/user/infra/typeorm/entities/UsersCourses';
-import { IUsersRepository } from '../repositories/IUsersRepository';
+// eslint-disable-next-line import/no-unresolved
+import Course from '@modules/course/infra/typeorm/entities/Course';
+// eslint-disable-next-line import/no-unresolved
+import IUsersRepository from '@modules/course/repository/ICoursesRepository';
+import { isPast } from 'date-fns';
 import IUsersCoursesRepository from '../repositories/IUsersCoursesRepository';
-import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   user_id: string;
@@ -14,26 +14,42 @@ interface IRequest {
 @injectable()
 class CreateUserService {
   constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
-
-    // @inject('CoursesRepository')
-    // private coursesRepository: ICoursesRepository,
+    @inject('CoursesRepository')
+    private coursesRepository: IUsersRepository,
 
     @inject('UsersCoursesRepository')
     private usersCoursesRepository: IUsersCoursesRepository,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<User | undefined> {
-    const coursesUser = await this.usersRepository.findByUuid(user_id);
+  public async execute({ user_id }: IRequest): Promise<Course[] | undefined> {
+    const coursesUser = await this.usersCoursesRepository.findAllByUser(
+      user_id,
+    );
 
-    // if (coursesUser?.Courses.length <= 0) {
-    //   throw new AppError("Doe's not exist cours for this user");
-    // }
+    const coursesToList = coursesUser.filter(course => {
+      return !isPast(course.limitAccess);
+    });
 
-    delete coursesUser?.password;
+    const coursesIdsExpired = coursesToList.map(courseFound => {
+      return courseFound.course_id;
+    });
 
-    return coursesUser;
+    const coursesIds = coursesUser.map(courseFound => {
+      return courseFound.course_id;
+    });
+
+    const coursesUserData = await this.coursesRepository.findAllByIds(
+      coursesIds,
+    );
+
+    const courses = coursesUserData?.map(course => {
+      if (coursesIdsExpired.includes(course.id)) {
+        return { ...course, expired: false };
+      }
+      return { ...course, expired: true };
+    });
+
+    return courses;
   }
 }
 

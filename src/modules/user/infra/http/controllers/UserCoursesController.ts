@@ -10,6 +10,7 @@ interface IRequest {
 export default class UsersCourses {
   public async index(request: Request, response: Response): Promise<Response> {
     const listAllCourses = container.resolve(ListAllCourses);
+    console.log('Working');
     const user_id = request.user.id;
 
     const user = await listAllCourses.execute({ user_id });
@@ -42,8 +43,8 @@ export default class UsersCourses {
     const updateLimit = container.resolve(UpdateLimitCourse);
 
     const { course_id } = request.body;
-
-    await updateLimit.execute(course_id);
+    const user_id = request.user.id;
+    await updateLimit.execute(course_id, user_id);
 
     return response.json({});
   }

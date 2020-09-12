@@ -3,6 +3,7 @@ import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRep
 import AppError from '@shared/errors/AppError';
 import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
 import ICoursesRepository from '../repository/ICoursesRepository';
+import Course from '../infra/typeorm/entities/Course';
 
 interface IRequest {
   course_id: string;
@@ -36,38 +37,20 @@ class CreateUserService {
   public async execute({
     course_id,
     user_id,
-  }: IRequest): Promise<ICourseData | undefined> {
-    const userHavePermission = await this.usersCoursesRepository.findCourseOfUser(
-      user_id,
-      course_id,
-    );
-
+  }: IRequest): Promise<Course | undefined> {
     const userLogged = await this.usersRepository.findByUuid(user_id);
-
-    console.log(userLogged);
 
     if (!userLogged) {
       throw new AppError('User not found', 401);
     }
 
-    if (userHavePermission.length <= 0) {
+    if (userLogged.level !== 'ADM') {
       throw new AppError('This user does have permission access this course');
     }
 
-    if (userHavePermission[0].limitAccess !== null) {
-      if (userHavePermission[0].limitAccess <= new Date()) {
-        throw new AppError('This course is at expired');
-      }
-    }
+    const course = await this.coursesRepository.findOne(course_id);
 
-    const courseData = await this.coursesRepository.findOne(course_id);
-
-    const course = {
-      ...courseData,
-      limitAccess: userHavePermission[0].limitAccess,
-    };
-
-    return course as ICourseData;
+    return course;
   }
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { Repository, getRepository, In } from 'typeorm';
 import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
 import IAddCoursesToUserDTO from '@modules/user/dtos/IAddCoursesToUserDTO';
@@ -27,10 +28,9 @@ class UsersCourseRepository implements IUsersCoursesRepository {
         course_id: id,
       },
     });
+    const date = new Date();
 
-    const validDate = new Date();
-
-    const limitAccessUpdate = add(validDate, {
+    const limitAccessUpdate = add(date, {
       days: 1,
     });
 

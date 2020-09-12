@@ -1,6 +1,6 @@
 import ICoursesRepository from '@modules/course/repository/ICoursesRepository';
 import ICreateCourseDTO from '@modules/course/dtos/ICreateCourseDTO';
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, In } from 'typeorm';
 import Course from '../entities/Course';
 
 class CourseRepository implements ICoursesRepository {
@@ -38,6 +38,22 @@ class CourseRepository implements ICoursesRepository {
     });
 
     return course;
+  }
+
+  public async findAllByIds(
+    userCourses: string[],
+  ): Promise<Course[] | undefined> {
+    const courses = await this.ormRepository.find({
+      where: {
+        id: In(userCourses),
+      },
+    });
+
+    return courses;
+  }
+
+  public async save(course: Course): Promise<Course> {
+    return this.ormRepository.save(course);
   }
 }
 

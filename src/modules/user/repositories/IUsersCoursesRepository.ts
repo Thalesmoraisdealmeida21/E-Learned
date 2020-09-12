@@ -10,6 +10,5 @@ export default interface IUsersCoursesRepository {
     courses_ids: string[],
     user_id: string,
   ): Promise<UsersCourses[]>;
-
-  updateLimitAccess(id: string): Promise<void>;
+  updateLimitAccess(course_id: string, user_id: string): Promise<void>;
 }

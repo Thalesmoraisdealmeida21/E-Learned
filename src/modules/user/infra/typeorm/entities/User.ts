@@ -23,7 +23,10 @@ class User {
   @Column()
   password: string;
 
-  @ManyToMany(() => Course, { eager: true })
+  @Column()
+  level: string;
+
+  @ManyToMany(() => Course)
   @JoinTable({
     name: 'users_courses',
     joinColumn: {

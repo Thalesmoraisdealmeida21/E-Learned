@@ -20,8 +20,8 @@ class CreateUserService {
     private usersCoursesRepository: IUsersCoursesRepository,
   ) {}
 
-  public async execute(id: string): Promise<void> {
-    await this.usersCoursesRepository.updateLimitAccess(id);
+  public async execute(course_id: string, user_id: string): Promise<void> {
+    await this.usersCoursesRepository.updateLimitAccess(course_id, user_id);
   }
 }
 
