@@ -3,10 +3,12 @@ import { container } from 'tsyringe';
 import CreateUserService from '@modules/user/services/CreateUserService';
 import ListUsersService from '@modules/user/services/ListAllUsersService';
 import GetOneUserService from '@modules/user/services/GetOneUser';
+import SearchUserService from '@modules/user/services/SearchUserService';
+import SendMailService from '@modules/user/services/SendMailService';
 
 export default class UserController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const createUser = container.resolve(CreateUserService);
+    const createUser = await container.resolve(CreateUserService);
     const { name, email, password } = request.body;
 
     const user = await createUser.execute({ name, email, password });
@@ -35,5 +37,32 @@ export default class UserController {
     delete user?.password;
 
     return response.json(user);
+  }
+
+  public async search(request: Request, response: Response): Promise<Response> {
+    const user_logged = request.user.id;
+
+    const { search } = request.query;
+
+    const searchUser = container.resolve(SearchUserService);
+
+    const users = await searchUser.execute(user_logged, search as string);
+
+    return response.json(users);
+  }
+
+  public async sendMail(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const user_logged = request.user.id;
+
+    const { to, html, subject } = request.body;
+
+    const sendMail = container.resolve(SendMailService);
+
+    await sendMail.execute(user_logged, to, html, subject);
+
+    return response.json();
   }
 }

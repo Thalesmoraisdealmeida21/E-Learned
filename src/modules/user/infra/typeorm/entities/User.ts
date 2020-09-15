@@ -7,7 +7,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import Course from '@modules/course/infra/typeorm/entities/Course';
+import Course from '../../../../course/infra/typeorm/entities/Course';
 
 @Entity('users')
 class User {
@@ -39,6 +39,30 @@ class User {
     },
   })
   courses: Course[];
+
+  @Column()
+  address: string;
+
+  @Column()
+  telephone: string;
+
+  @Column()
+  cpfCnpj: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  neighborhood: string;
+
+  @Column()
+  uf: string;
+
+  @Column()
+  addressNumber: string;
+
+  @Column()
+  complement: string;
 
   @CreateDateColumn()
   created_at: Date;

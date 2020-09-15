@@ -1,5 +1,5 @@
 import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, Like, In } from 'typeorm';
 import ICreateUserDTO from '@modules/user/dtos/ICreateUserDTO';
 import User from '../entities/User';
 
@@ -33,6 +33,32 @@ class UsersRepository implements IUsersRepository {
 
   public async findAll(): Promise<User[] | undefined> {
     const users = await this.ormRepository.find();
+
+    return users;
+  }
+
+  public async search(search: string): Promise<User[] | undefined> {
+    const users = await this.ormRepository.find({
+      where: [
+        { name: Like(`%${search}%`) },
+        { email: Like(`%${search}%`) },
+        { city: Like(`%${search}%`) },
+        { telephone: Like(`%${search}%`) },
+        { cpfCnpj: Like(`%${search}%`) },
+        { address: Like(`%${search}%`) },
+        { neighborhood: Like(`%${search}%`) },
+      ],
+    });
+
+    return users;
+  }
+
+  public async findByIds(usersIds: string[]): Promise<User[] | undefined> {
+    const users = this.ormRepository.find({
+      where: {
+        id: In(usersIds),
+      },
+    });
 
     return users;
   }

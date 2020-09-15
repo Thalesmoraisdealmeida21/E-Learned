@@ -25,7 +25,7 @@ export default class EtherealMailProvider implements IMailProvider {
     to,
     from,
     subject,
-    link,
+    html,
   }: SendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
       from: {
@@ -37,29 +37,7 @@ export default class EtherealMailProvider implements IMailProvider {
         address: to.email,
       },
       subject,
-      html: `<style>
-          .message-content {
-            font-family: Arial, Helvetica, sans-serif;
-            max-width: 600px;
-            font-size: 18px;
-            line-height: 21px;
-          }
-        </style>S
-
-        <div class="message-content">
-          <p>Olá, ${to.name} </p>
-          <p>Parece que uma troca de senha para sua conta foi solicitada</p>
-          <p>Se foi você, então clique no link abaixo para escolher uma nova senha</p>
-          <p>
-            <a href="${link}">Resetar minha senha</a>
-          </p>
-
-          <p>Se não foi você, então descarte este e-mail</p>
-          <p>
-            Obrigado !<br />
-            <strong>Equipe Florescer</strong>
-          </p>
-        `,
+      html,
     });
 
     console.log('Message sent: %s', message.id);
