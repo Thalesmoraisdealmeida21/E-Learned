@@ -45,6 +45,8 @@ export default class UserController {
 
     const { search } = request.query;
 
+    console.log(search);
+
     const searchUser = container.resolve(SearchUserService);
 
     const users = await searchUser.execute(user_logged, search as string);
