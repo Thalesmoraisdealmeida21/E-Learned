@@ -1,6 +1,9 @@
 import nodemailer, { Transporter } from 'nodemailer';
 
 import SendMailDTO from '@shared/dtos/SendMailDTO';
+
+import SendMailAllDTO from '@shared/dtos/SendMailAllDTO';
+
 import IMailProvider from '../models/IMailProvider';
 
 export default class EtherealMailProvider implements IMailProvider {
@@ -36,6 +39,26 @@ export default class EtherealMailProvider implements IMailProvider {
         name: to.name,
         address: to.email,
       },
+      subject,
+      html,
+    });
+
+    console.log('Message sent: %s', message.id);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
+  }
+
+  public async sendMailAll({
+    to,
+    from,
+    subject,
+    html,
+  }: SendMailAllDTO): Promise<void> {
+    const message = await this.client.sendMail({
+      from: {
+        name: from?.name || 'Equipe Florescer',
+        address: from?.email || 'equipe@florescer.com.br',
+      },
+      to,
       subject,
       html,
     });

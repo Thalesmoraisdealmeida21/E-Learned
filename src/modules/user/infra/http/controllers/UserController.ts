@@ -5,6 +5,7 @@ import ListUsersService from '@modules/user/services/ListAllUsersService';
 import GetOneUserService from '@modules/user/services/GetOneUser';
 import SearchUserService from '@modules/user/services/SearchUserService';
 import SendMailService from '@modules/user/services/SendMailService';
+import SendMailAllService from '@modules/user/services/SendMailAllService';
 
 export default class UserController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -62,6 +63,21 @@ export default class UserController {
     const sendMail = container.resolve(SendMailService);
 
     await sendMail.execute(user_logged, to, html, subject);
+
+    return response.json();
+  }
+
+  public async sendAllMail(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const user_logged = request.user.id;
+
+    const { html, subject } = request.body;
+
+    const sendMail = container.resolve(SendMailAllService);
+
+    await sendMail.execute(user_logged, html, subject);
 
     return response.json();
   }

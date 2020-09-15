@@ -13,6 +13,12 @@ userRouter.get('/', ensureAuthenticate, usersController.index);
 userRouter.get('/search', ensureAuthenticate, usersController.search);
 userRouter.post('/sendmail', ensureAuthenticate, usersController.sendMail);
 
+userRouter.post(
+  '/sendmail/all',
+  ensureAuthenticate,
+  usersController.sendAllMail,
+);
+
 userRouter.get('/courses', ensureAuthenticate, usersCoursesController.index);
 userRouter.get('/:user_id', ensureAuthenticate, usersController.show);
 userRouter.post('/courses', ensureAuthenticate, usersCoursesController.create);

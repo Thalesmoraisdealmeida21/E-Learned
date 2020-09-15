@@ -5,7 +5,7 @@ import IMailProvider from '@shared/container/providers/MailProvider/models/IMail
 import { IUsersRepository } from '../repositories/IUsersRepository';
 
 @injectable()
-export default class SendMailResetPasswordService {
+export class SendMailResetPasswordService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -16,12 +16,10 @@ export default class SendMailResetPasswordService {
 
   public async execute(
     user_logged: string,
-    to: string,
     html: string,
     subject: string,
   ): Promise<void> {
-    const userToSend = await this.usersRepository.findByUuid(to);
-
+    const usersToSend = await this.usersRepository.findAll();
     const user_logged_data = await this.usersRepository.findByUuid(user_logged);
 
     if (!user_logged_data) {
@@ -29,18 +27,22 @@ export default class SendMailResetPasswordService {
     }
 
     if (user_logged_data.level !== 'ADM') {
-      if (!userToSend) {
-        throw new AppError('User not found');
-      }
-
-      await this.mailProvider.sendMail({
-        to: {
-          name: userToSend.name,
-          email: userToSend.email,
-        },
-        subject,
-        html,
-      });
+      throw new AppError('User no have permission for this');
     }
+
+    if (usersToSend?.length <= 0) {
+      throw new AppError('no registered users');
+    }
+    const emailsToSend = usersToSend.map(userToSend => {
+      return userToSend.email;
+    });
+
+    await this.mailProvider.sendMailAll({
+      to: emailsToSend,
+      subject,
+      html,
+    });
   }
 }
+
+export default SendMailResetPasswordService;
