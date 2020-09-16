@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.0",
+    "aws-sdk": "^2.753.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "date-fns": "^2.16.1",

@@ -13,8 +13,8 @@ export default {
 
   defaults: {
     from: {
-      email: 'equipe@florescer.com.br',
-      name: 'Thales Morais',
+      email: 'equipe@florescereducacao.com.br',
+      name: 'Equipe Florescer Educação',
     },
   },
 } as IMailCOnfig;

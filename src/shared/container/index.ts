@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
+import mailConfig from '@config/mail';
 
-import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
+import IUsersRepository from '@modules/user/repositories/IUsersRepository';
 import UsersRepository from '@modules/user/infra/typeorm/repositories/UsersRepository';
 
 import ICoursesRepository from '@modules/course/repository/ICoursesRepository';
@@ -10,7 +11,7 @@ import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRep
 import UsersCoursesRepository from '@modules/user/infra/typeorm/repositories/UsersCoursesRepository';
 
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
-import EtherealMailProvider from './providers/MailProvider/implementations/EtherealMailProvider';
+import mailsProvider from './providers/MailProvider';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -29,5 +30,5 @@ container.registerSingleton<IUsersCoursesRepository>(
 
 container.registerInstance<IMailProvider>(
   'MailProvider',
-  container.resolve(EtherealMailProvider),
+  mailsProvider[mailConfig.driver],
 );

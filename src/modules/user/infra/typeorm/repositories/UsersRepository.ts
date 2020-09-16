@@ -31,7 +31,7 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async findAll(): Promise<User[] | undefined> {
+  public async findAll(): Promise<User[]> {
     const users = await this.ormRepository.find();
 
     return users;
@@ -44,7 +44,6 @@ class UsersRepository implements IUsersRepository {
         { email: Like(`%${search}%`) },
         { city: Like(`%${search}%`) },
         { telephone: Like(`%${search}%`) },
-        { cpfCnpj: Like(`%${search}%`) },
         { address: Like(`%${search}%`) },
         { neighborhood: Like(`%${search}%`) },
       ],
