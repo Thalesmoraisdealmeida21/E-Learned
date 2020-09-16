@@ -56,7 +56,7 @@ export default class EtherealMailProvider implements IMailProvider {
         name: from?.name || 'Equipe Florescer',
         address: from?.email || 'equipe@florescereducacao.com.br',
       },
-      to,
+      bcc: to,
       subject,
       html,
     });
