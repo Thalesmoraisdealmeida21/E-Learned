@@ -8,4 +8,5 @@ export default interface IUsersRepository {
   findAll(): Promise<User[]>;
   search(search: string): Promise<User[] | undefined>;
   findByIds(users: string[]): Promise<User[] | undefined>;
+  save(user: User): Promise<User>;
 }

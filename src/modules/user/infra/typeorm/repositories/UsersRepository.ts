@@ -37,6 +37,10 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
+  public async save(user: User): Promise<User> {
+    return this.ormRepository.save(user);
+  }
+
   public async search(search: string): Promise<User[] | undefined> {
     const users = await this.ormRepository.find({
       where: [

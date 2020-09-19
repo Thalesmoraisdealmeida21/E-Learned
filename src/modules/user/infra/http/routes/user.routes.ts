@@ -22,6 +22,7 @@ userRouter.post(
 userRouter.get('/courses', ensureAuthenticate, usersCoursesController.index);
 userRouter.get('/:user_id', ensureAuthenticate, usersController.show);
 userRouter.post('/courses', ensureAuthenticate, usersCoursesController.create);
+userRouter.put('/', ensureAuthenticate, usersController.updateUser);
 userRouter.put(
   '/courses',
   ensureAuthenticate,

@@ -6,6 +6,7 @@ import GetOneUserService from '@modules/user/services/GetOneUser';
 import SearchUserService from '@modules/user/services/SearchUserService';
 import SendMailService from '@modules/user/services/SendMailService';
 import SendMailAllService from '@modules/user/services/SendMailAllService';
+import UpdateUserService from '@modules/user/services/UpdateUserService';
 
 export default class UserController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -65,6 +66,21 @@ export default class UserController {
     await sendMail.execute(user_logged, to, html, subject);
 
     return response.json();
+  }
+
+  public async updateUser(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const data = request.body;
+    const { id } = request.user;
+
+    const updateProfile = container.resolve(UpdateUserService);
+    const dataToUpdate = { ...data, id };
+
+    const userUpdated = await updateProfile.execute(dataToUpdate);
+
+    return response.json(userUpdated);
   }
 
   public async sendAllMail(
