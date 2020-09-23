@@ -45,7 +45,7 @@ export default class PostController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const updatePost = container.resolve(UpdatePostService);
-    const { id } = request.user;
+    const { id } = request.params;
     const { name, description, resume, facebookLink, category } = request.body;
 
     const postUpdated = await updatePost.execute({
