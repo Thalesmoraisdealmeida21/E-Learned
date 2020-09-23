@@ -4,7 +4,7 @@ import { compare } from 'bcryptjs';
 import User from '@modules/user/infra/typeorm/entities/User';
 import { sign } from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import { IUsersRepository } from '../repositories/IUsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
   email: string;
@@ -27,14 +27,13 @@ class CreateUserService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('This E-mail is not exists', 401);
+      throw new AppError('This E-mail is not exists');
     }
 
     const passwordMatched = await compare(password, user.password);
 
-
     if (!passwordMatched) {
-      throw new AppError('This Password is wrong', 401);
+      throw new AppError('This Password is wrong');
     }
 
     const token = sign({}, authConfig.secret, {

@@ -13,12 +13,17 @@ export default class AuthController {
     return response.json(auth);
   }
 
-  public async sendMailPassword(request: Request, response: Response): Promise<Response> {
-      const {email} = request.body;
-      const sendMailResetPassword = container.resolve(SendMailResetPasswordService)
+  public async sendMailPassword(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { email } = request.body;
+    const sendMailResetPassword = container.resolve(
+      SendMailResetPasswordService,
+    );
 
-      await sendMailResetPassword.execute(email);
+    await sendMailResetPassword.execute(email);
 
-      return response.status(204).json();
+    return response.status(204).json();
   }
 }

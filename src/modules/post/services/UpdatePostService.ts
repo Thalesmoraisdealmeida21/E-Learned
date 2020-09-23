@@ -1,0 +1,48 @@
+import { injectable, inject } from 'tsyringe';
+import AppError from '@shared/errors/AppError';
+import IPostRepository from '../repository/IPostRepository';
+import Post from '../infra/typeorm/entities/Post';
+
+interface IRequest {
+  id: string;
+  name: string;
+  description: string;
+  resume: string;
+  facebookLink: string;
+  category: string;
+}
+
+@injectable()
+class UpdatePostService {
+  constructor(
+    @inject('PostsRepository')
+    private postsRepository: IPostRepository,
+  ) {}
+
+  public async execute({
+    id,
+    name,
+    description,
+    resume,
+    facebookLink,
+    category,
+  }: IRequest): Promise<Post | undefined> {
+    const post = await this.postsRepository.findOnePost(id);
+
+    if (!post) {
+      throw new AppError('This post not found');
+    }
+
+    post.name = name;
+    post.category = category;
+    post.description = description;
+    post.resume = resume;
+    post.facebookLink = facebookLink;
+
+    const postSaved = await this.postsRepository.save(post);
+
+    return postSaved;
+  }
+}
+
+export default UpdatePostService;

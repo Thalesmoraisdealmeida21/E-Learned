@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
+
 // eslint-disable-next-line import/no-unresolved
 import Course from '@modules/course/infra/typeorm/entities/Course';
 // eslint-disable-next-line import/no-unresolved
@@ -25,6 +27,10 @@ class CreateUserService {
     const coursesUser = await this.usersCoursesRepository.findAllByUser(
       user_id,
     );
+
+    if (coursesUser.length <= 0) {
+      throw new AppError('Nenhum curso encontrado');
+    }
 
     const coursesToList = coursesUser.filter(course => {
       return !isPast(course.limitAccess);
