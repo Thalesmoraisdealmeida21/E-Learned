@@ -10,15 +10,26 @@ import CourseRepository from '@modules/course/infra/typeorm/repositories/CourseR
 import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
 import UsersCoursesRepository from '@modules/user/infra/typeorm/repositories/UsersCoursesRepository';
 
-// import IPostRepository from '@modules/post/repository/IPostRepository';
-// import PostRepository from '@modules/post/infra/typeorm/repositories/PostRepository';
+import IPostRepository from '@modules/post/repository/IPostRepository';
+import PostRepository from '@modules/post/infra/typeorm/repositories/PostRepository';
+
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
 import mailsProvider from './providers/MailProvider';
+
+import IStorageProvider from './providers/StorageProvider/models/IStorageProvider';
+import DiskStorageProvider from './providers/StorageProvider/implementations/DiskStorageProvider';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
 );
+
+container.registerSingleton<IStorageProvider>(
+  'StorageProvider',
+  DiskStorageProvider,
+);
+
+container.registerSingleton<IPostRepository>('PostsRepository', PostRepository);
 
 container.registerSingleton<ICoursesRepository>(
   'CoursesRepository',

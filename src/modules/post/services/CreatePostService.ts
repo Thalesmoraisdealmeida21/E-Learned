@@ -8,6 +8,7 @@ interface IRequest {
   resume: string;
   facebookLink: string;
   category: string;
+  image: string;
 }
 
 @injectable()
@@ -23,6 +24,7 @@ class CreateUserService {
     resume,
     facebookLink,
     category,
+    image,
   }: IRequest): Promise<Post | undefined> {
     const post = await this.postsRepository.create({
       name,
@@ -30,6 +32,7 @@ class CreateUserService {
       resume,
       facebookLink,
       category,
+      image,
     });
 
     return post;

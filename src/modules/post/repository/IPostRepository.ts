@@ -7,4 +7,5 @@ export default interface IPostRepository {
   findAll(): Promise<Post[]>;
   search(search: string): Promise<Post[]>;
   save(post: Post): Promise<Post | undefined>;
+  delete(id: string): Promise<void>;
 }

@@ -24,6 +24,9 @@ class Post {
   description: string;
 
   @Column()
+  image: string;
+
+  @Column()
   facebookLink: string;
 
   @CreateDateColumn()

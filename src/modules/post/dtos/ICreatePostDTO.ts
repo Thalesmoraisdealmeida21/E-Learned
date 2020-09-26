@@ -4,4 +4,5 @@ export default interface ICreatePostDTO {
   resume: string;
   description: string;
   facebookLink: string;
+  image: string;
 }
