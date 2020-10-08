@@ -17,10 +17,13 @@ class UpdatePostService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ postImageFileName }: IRequest): Promise<string> {
+  public async execute({ postImageFileName }: IRequest): Promise<{url: string, file: string}> {
     const imageUrl = `${process.env.APP_API_URL}/files/${postImageFileName}`;
 
-    return imageUrl;
+  
+    
+
+    return { url: imageUrl, file: postImageFileName};
   }
 }
 

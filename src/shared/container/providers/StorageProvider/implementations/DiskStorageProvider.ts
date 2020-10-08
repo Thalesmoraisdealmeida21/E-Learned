@@ -17,12 +17,12 @@ class DiskStorageProvider implements IStorageProvider {
     const filePath = path.resolve(uploadConfig.uploadFolder, file);
 
     try {
-      fs.statSync(filePath);
+      fs.unlinkSync(filePath);
     } catch {
       return;
     }
 
-    fs.unlinkSync(filePath);
+  
   }
 }
 

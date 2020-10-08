@@ -13,6 +13,9 @@ import UsersCoursesRepository from '@modules/user/infra/typeorm/repositories/Use
 import IPostRepository from '@modules/post/repository/IPostRepository';
 import PostRepository from '@modules/post/infra/typeorm/repositories/PostRepository';
 
+import IOrderRepository from '@modules/order/repositories/IOrderRepository';
+import OrderRepository from '@modules/order/infra/typeorm/repositories/OrderRepository';
+
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
 import mailsProvider from './providers/MailProvider';
 
@@ -22,6 +25,11 @@ import DiskStorageProvider from './providers/StorageProvider/implementations/Dis
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IOrderRepository>(
+  'OrderRepository',
+  OrderRepository,
 );
 
 container.registerSingleton<IStorageProvider>(

@@ -1,6 +1,6 @@
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import IPostRepository from '../repository/IPostRepository';
 
 @injectable()
@@ -21,8 +21,9 @@ class DeletePostService {
     }
 
     this.storageProvider.deleteFile(post.image);
+    post.image = '';
 
-    await this.postsRepository.delete(id);
+    await this.postsRepository.save(post);
   }
 }
 

@@ -11,6 +11,7 @@ class GetOnePostService {
 
   public async execute(id: string): Promise<Post | undefined> {
     const post = await this.postsRepository.findOnePost(id);
+
     return post;
   }
 }
