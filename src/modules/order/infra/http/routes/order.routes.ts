@@ -9,6 +9,7 @@ orderRouter.post('/', ensureAuthenticate, orderController.create);
 
 orderRouter.get('/', ensureAuthenticate, orderController.findAll);
 
+orderRouter.post('/pay/:orderId', orderController.pay);
 orderRouter.get('/:orderId', ensureAuthenticate, orderController.findOne);
 
 export default orderRouter;

@@ -25,11 +25,15 @@ class Order {
   @Column()
   status: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    eager: true,
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToMany(() => Course)
+  @ManyToMany(() => Course, {
+    eager: true,
+  })
   @JoinTable({
     name: 'orders_courses',
     joinColumn: {

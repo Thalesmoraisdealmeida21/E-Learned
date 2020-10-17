@@ -22,6 +22,9 @@ import mailsProvider from './providers/MailProvider';
 import IStorageProvider from './providers/StorageProvider/models/IStorageProvider';
 import DiskStorageProvider from './providers/StorageProvider/implementations/DiskStorageProvider';
 
+import IPaymentProvider from './providers/PaymentProvider/model/IPaymentProvider';
+import PagarmeProvider from './providers/PaymentProvider/implementation/PagarmeProvider';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -52,4 +55,9 @@ container.registerSingleton<IUsersCoursesRepository>(
 container.registerInstance<IMailProvider>(
   'MailProvider',
   mailsProvider[mailConfig.driver],
+);
+
+container.registerSingleton<IPaymentProvider>(
+  'PaymentProvider',
+  PagarmeProvider,
 );

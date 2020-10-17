@@ -50,8 +50,15 @@ class CreateOrderService {
     }
 
     await this.orderRepository.save(order);
+    let totalOrder = 0;
+    // eslint-disable-next-line array-callback-return
+    order.courses.map(item => {
+      totalOrder += item.price;
+    });
 
-    return order;
+    const orderToRetun = { ...order, total: Number(totalOrder) };
+
+    return orderToRetun;
   }
 }
 

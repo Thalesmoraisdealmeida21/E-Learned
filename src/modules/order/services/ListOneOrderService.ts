@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import Order from '@modules/order/infra/typeorm/entities/Order';
 import IOrderRepository from '@modules/order/repositories/IOrderRepository';
 import AppError from '@shared/errors/AppError';
@@ -17,7 +18,19 @@ class CreateOrderService {
       throw new AppError('Order not found');
     }
 
-    return order;
+    const { total } = order.courses.reduce(
+      (accumulator, course) => {
+        accumulator.total += Number(course.price);
+        return accumulator;
+      },
+      {
+        total: 0,
+      },
+    );
+
+    const orderToReturn = { ...order, total };
+
+    return orderToReturn;
   }
 }
 
