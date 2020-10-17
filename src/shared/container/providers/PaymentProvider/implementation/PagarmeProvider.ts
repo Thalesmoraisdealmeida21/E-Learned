@@ -24,24 +24,11 @@ export default class PagarmeProvider implements IPaymentProvider {
   public async pay({
     payment_method,
     amount,
-    card_cvv,
     customer,
-    card_expiration_date,
-    card_holder_name,
-    card_number,
+    card_hash,
   }: ICreateTransaction): Promise<IResponse> {
     const client = await pagarme.client.connect({
       api_key: process.env.APP_PAGARME_ENCRYPTION_KEY,
-    });
-
-    const card_hash = await client.security.encrypt({
-      payment_method,
-      amount,
-      card_cvv,
-      customer,
-      card_expiration_date,
-      card_holder_name,
-      card_number,
     });
 
     const transactionCreated = await client.transactions.create({
