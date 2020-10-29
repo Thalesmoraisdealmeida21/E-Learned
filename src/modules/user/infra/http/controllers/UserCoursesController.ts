@@ -10,7 +10,7 @@ interface IRequest {
 export default class UsersCourses {
   public async index(request: Request, response: Response): Promise<Response> {
     const listAllCourses = container.resolve(ListAllCourses);
-    console.log('Working');
+
     const user_id = request.user.id;
 
     const user = await listAllCourses.execute({ user_id });
@@ -23,11 +23,13 @@ export default class UsersCourses {
     const user_id = request.user.id;
     const { courses } = request.body;
 
-    const coursesToInser: IRequest[] = courses;
+    const coursesToInsert: string[] = courses;
 
-    const UsersCoursesToInsert = coursesToInser.map(course => {
-      return { user_id, course_id: course.course_id };
+    const UsersCoursesToInsert = coursesToInsert.map(course => {
+      return { user_id, course_id: course };
     });
+
+    console.log(UsersCoursesToInsert);
 
     const coursesToInserted = await addCourseToUser.execute(
       UsersCoursesToInsert,

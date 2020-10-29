@@ -15,6 +15,7 @@ declare module 'pagarme' {
         amount: number,
         payment_method: string,
         customer: Customer,
+        billing: Billing,
       });
     }
 
@@ -28,6 +29,20 @@ declare module 'pagarme' {
       name: string;
       documents: Document[];
     }
+
+    interface Billing {
+      name: string;
+      address: {
+        country: string;
+        state: string;
+        city: string;
+        neighborhood: string;
+        street: string;
+        street_number: string;
+        zipcode: string;
+      };
+    }
+
     interface ICustomer {
       type: string;
       country: string;

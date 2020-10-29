@@ -4,15 +4,14 @@ import IOrderRepository from '@modules/order/repositories/IOrderRepository';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 import IPaymentProvider from '@shared/container/providers/PaymentProvider/model/IPaymentProvider';
+import User from '@modules/user/infra/typeorm/entities/User';
 
 interface IRequest {
   amount: number;
-  card_number?: string;
-  card_cvv?: string;
-  card_expiration_date?: string;
-  card_holder_name?: string;
   payment_method: string;
   orderId: string;
+  card_hash: string;
+  user: User;
 }
 
 interface IResponse {
@@ -51,12 +50,10 @@ class GenerateTransaction {
 
   public async execute({
     amount,
-    card_number,
-    card_cvv,
-    card_expiration_date,
-    card_holder_name,
+    card_hash,
     orderId,
     payment_method,
+    user,
   }: IRequest): Promise<IResponse> {
     const orderForPay = await this.orderRepository.findById(orderId);
 
@@ -70,6 +67,11 @@ class GenerateTransaction {
       throw new AppError('This Customer not found');
     }
 
+    await this.usersRepository.save(user);
+
+    if (!customer.cpfCnpj) {
+      throw new AppError('Por favor informe um CPF / CNPJ');
+    }
     const customerToPay: ICustomer = {
       type: 'individual',
       country: 'br',
@@ -77,7 +79,7 @@ class GenerateTransaction {
       documents: [
         {
           type: 'cpf',
-          number: customer.cpfCnpj || '03809764043',
+          number: customer.cpfCnpj || '',
         },
       ],
     };
@@ -90,15 +92,23 @@ class GenerateTransaction {
 
     const transaction = await this.paymentProvider.pay({
       amount,
-      card_number,
-      card_cvv,
-      card_expiration_date,
-      card_holder_name,
+      card_hash,
       payment_method: methodToPay,
       customer: payment_method === 'boleto' ? customerToPay : undefined,
+      billing: {
+        name: user.name,
+        address: {
+          city: user.city,
+          country: 'br',
+          neighborhood: user.neighborhood,
+          state: user.uf,
+          street: user.address,
+          street_number: user.addressNumber,
+          zipcode: user.cep,
+        },
+      },
     });
 
-    console.log(amount);
     orderForPay.status = transaction.status;
 
     await this.orderRepository.save(orderForPay);

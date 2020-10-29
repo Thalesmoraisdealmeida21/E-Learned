@@ -18,6 +18,9 @@ class User {
   email: string;
 
   @Column()
+  cep: string;
+
+  @Column()
   name: string;
 
   @Column()

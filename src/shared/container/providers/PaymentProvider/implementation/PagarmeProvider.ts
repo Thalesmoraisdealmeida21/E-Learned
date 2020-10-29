@@ -20,23 +20,51 @@ interface IResponse {
   boleto_expiration_date: string;
 }
 
+interface IBilling {
+  name: string;
+  address: {
+    country: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    street_number: string;
+    zipcode: string;
+  };
+}
+
 export default class PagarmeProvider implements IPaymentProvider {
   public async pay({
     payment_method,
     amount,
-    customer,
     card_hash,
+    customer,
+    billing,
   }: ICreateTransaction): Promise<IResponse> {
     const client = await pagarme.client.connect({
       api_key: process.env.APP_PAGARME_ENCRYPTION_KEY,
     });
 
-    const transactionCreated = await client.transactions.create({
-      card_hash,
-      amount,
-      customer,
-      payment_method,
-    });
+    try {
+      const dataCard = {
+        card_hash,
+        amount,
+        customer,
+        payment_method,
+        billing,
+      };
+
+      console.log(dataCard);
+      const transactionCreated = await client.transactions.create({
+        card_hash,
+        amount,
+        customer,
+        payment_method,
+        billing,
+      });
+    } catch (err) {
+      console.log(err.response);
+    }
 
     return transactionCreated;
   }
