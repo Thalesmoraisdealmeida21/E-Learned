@@ -10,6 +10,14 @@ interface IDocument {
   number: string;
 }
 
+interface IItem {
+  id: string;
+  title: string;
+  unit_price: number;
+  quantity: number;
+  tangible: boolean;
+}
+
 interface IBilling {
   name: string;
   address: {
@@ -29,4 +37,13 @@ export default interface ICreateTransaction {
   payment_method?: string;
   customer?: ICustomer;
   billing: IBilling;
+  items: [
+    {
+      id: string;
+      title: string;
+      unit_price: number;
+      quantity: number;
+      tangible: boolean;
+    },
+  ];
 }

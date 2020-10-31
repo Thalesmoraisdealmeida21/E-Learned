@@ -15,6 +15,16 @@ declare module 'pagarme' {
         amount: number,
         payment_method: string,
         customer: Customer,
+        items: [
+          {
+            id: string,
+            title: string,
+            unit_price: number,
+            quantity: number,
+            tangible: boolean,
+          },
+        ],
+
         billing: Billing,
       });
     }
@@ -23,6 +33,7 @@ declare module 'pagarme' {
       type: string;
       number: string;
     }
+
     interface Customer {
       type: string;
       country: string;

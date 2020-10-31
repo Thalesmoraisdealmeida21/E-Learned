@@ -43,7 +43,7 @@ export default class UserController {
   }
 
   public async pay(request: Request, response: Response): Promise<Response> {
-    const { amount, card_hash, payment_method, user } = request.body;
+    const { amount, card_hash, payment_method, user, items } = request.body;
 
     const { orderId } = request.params;
 
@@ -55,6 +55,7 @@ export default class UserController {
       payment_method,
       card_hash,
       user,
+      items,
     });
 
     return response.json(transaction);

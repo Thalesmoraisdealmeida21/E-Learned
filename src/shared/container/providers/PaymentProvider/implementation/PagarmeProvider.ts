@@ -1,6 +1,7 @@
 import pagarme from 'pagarme';
 import ICreateTransaction from '@modules/order/dtos/ICreateTransaction';
 
+import AppError from '@shared/errors/AppError';
 import IPaymentProvider from '../model/IPaymentProvider';
 
 export interface ITransaction {
@@ -40,6 +41,7 @@ export default class PagarmeProvider implements IPaymentProvider {
     card_hash,
     customer,
     billing,
+    items,
   }: ICreateTransaction): Promise<IResponse> {
     const client = await pagarme.client.connect({
       api_key: process.env.APP_PAGARME_ENCRYPTION_KEY,
@@ -52,6 +54,7 @@ export default class PagarmeProvider implements IPaymentProvider {
         customer,
         payment_method,
         billing,
+        items,
       };
 
       console.log(dataCard);
@@ -61,7 +64,13 @@ export default class PagarmeProvider implements IPaymentProvider {
         customer,
         payment_method,
         billing,
+        items,
       });
+
+      if (transactionCreated.status === 'refused') {
+        console.log('entrou aki');
+        throw new AppError('Transaction Refused');
+      }
     } catch (err) {
       console.log(err.response);
     }

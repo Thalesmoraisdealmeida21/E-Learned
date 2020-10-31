@@ -1,5 +1,4 @@
 import IUsersRepository from '@modules/user/repositories/IUsersRepository';
-
 import IOrderRepository from '@modules/order/repositories/IOrderRepository';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
@@ -12,6 +11,15 @@ interface IRequest {
   orderId: string;
   card_hash: string;
   user: User;
+  items: [
+    {
+      id: string;
+      title: string;
+      unit_price: number;
+      quantity: number;
+      tangible: boolean;
+    },
+  ];
 }
 
 interface IResponse {
@@ -24,9 +32,13 @@ interface IResponse {
 }
 
 interface ICustomer {
+  external_id: string;
   type: string;
   country: string;
   name: string;
+  email: string;
+  phone_numbers: string[];
+
   documents: IDocument[];
 }
 
@@ -54,6 +66,7 @@ class GenerateTransaction {
     orderId,
     payment_method,
     user,
+    items,
   }: IRequest): Promise<IResponse> {
     const orderForPay = await this.orderRepository.findById(orderId);
 
@@ -67,19 +80,25 @@ class GenerateTransaction {
       throw new AppError('This Customer not found');
     }
 
-    await this.usersRepository.save(user);
+    const userUpdated = await this.usersRepository.save(user);
+
+    console.log(userUpdated);
 
     if (!customer.cpfCnpj) {
       throw new AppError('Por favor informe um CPF / CNPJ');
     }
+
     const customerToPay: ICustomer = {
       type: 'individual',
+      external_id: userUpdated.id,
       country: 'br',
-      name: customer.name,
+      email: userUpdated.email,
+      name: userUpdated.name,
+      phone_numbers: [userUpdated.telephone],
       documents: [
         {
           type: 'cpf',
-          number: customer.cpfCnpj || '',
+          number: userUpdated.cpfCnpj.replace(/(\.|\/|-)/g, '') || '',
         },
       ],
     };
@@ -94,7 +113,7 @@ class GenerateTransaction {
       amount,
       card_hash,
       payment_method: methodToPay,
-      customer: payment_method === 'boleto' ? customerToPay : undefined,
+      customer: customerToPay,
       billing: {
         name: user.name,
         address: {
@@ -107,9 +126,14 @@ class GenerateTransaction {
           zipcode: user.cep,
         },
       },
+      items,
     });
 
     orderForPay.status = transaction.status;
+
+    if (transaction.status === 'refused') {
+      throw new AppError('transaction refused');
+    }
 
     await this.orderRepository.save(orderForPay);
 
