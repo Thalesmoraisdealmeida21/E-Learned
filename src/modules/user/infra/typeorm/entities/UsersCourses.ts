@@ -18,7 +18,7 @@ class UsersCourses {
   course_id: string;
 
   @Column('timestamp with time zone')
-  limitAccess: Date;
+  limitAccess: Date | null;
 
   @CreateDateColumn()
   created_at: Date;

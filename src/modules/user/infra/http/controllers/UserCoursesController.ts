@@ -29,8 +29,6 @@ export default class UsersCourses {
       return { user_id, course_id: course };
     });
 
-    console.log(UsersCoursesToInsert);
-
     const coursesToInserted = await addCourseToUser.execute(
       UsersCoursesToInsert,
     );

@@ -25,9 +25,10 @@ class Order {
   @Column()
   status: string;
 
-  @ManyToOne(() => User, {
-    eager: true,
-  })
+  @Column()
+  numero: string;
+
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;
 

@@ -3,6 +3,7 @@ import { Repository, getRepository, In } from 'typeorm';
 import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
 import IAddCoursesToUserDTO from '@modules/user/dtos/IAddCoursesToUserDTO';
 import { add } from 'date-fns';
+import AppError from '@shared/errors/AppError';
 import UsersCourses from '../entities/UsersCourses';
 
 class UsersCourseRepository implements IUsersCoursesRepository {
@@ -10,6 +11,23 @@ class UsersCourseRepository implements IUsersCoursesRepository {
 
   constructor() {
     this.ormRepository = getRepository(UsersCourses);
+  }
+
+  public async resetLimit(course_id: string, user_id: string): Promise<void> {
+    const courseToReset = await this.ormRepository.findOne({
+      where: {
+        course_id,
+        user_id,
+      },
+    });
+
+    if (!courseToReset) {
+      throw new AppError('This Course does exists');
+    } else {
+      courseToReset.limitAccess = null;
+    }
+
+    await this.ormRepository.save(courseToReset);
   }
 
   public async findAllByUser(user_id: string): Promise<UsersCourses[]> {

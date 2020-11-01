@@ -7,4 +7,5 @@ export default interface IOrderRepository {
   findAll(): Promise<Order[]>;
   findById(id: string): Promise<Order | undefined>;
   save(order: Order): Promise<void>;
+  findByUser(userId: string): Promise<Order[]>;
 }
