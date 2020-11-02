@@ -47,31 +47,17 @@ export default class PagarmeProvider implements IPaymentProvider {
       api_key: process.env.APP_PAGARME_ENCRYPTION_KEY,
     });
 
-    try {
-      const dataCard = {
-        card_hash,
-        amount,
-        customer,
-        payment_method,
-        billing,
-        items,
-      };
+    const transactionCreated = await client.transactions.create({
+      card_hash,
+      amount,
+      customer,
+      payment_method,
+      billing,
+      items,
+    });
 
-      console.log(dataCard);
-      const transactionCreated = await client.transactions.create({
-        card_hash,
-        amount,
-        customer,
-        payment_method,
-        billing,
-        items,
-      });
-
-      if (transactionCreated.status === 'refused') {
-        throw new AppError('Transaction Refused');
-      }
-    } catch (err) {
-      console.log(err.response);
+    if (transactionCreated.status === 'refused') {
+      throw new AppError('Transaction Refused');
     }
 
     return transactionCreated;

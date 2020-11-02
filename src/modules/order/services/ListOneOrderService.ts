@@ -18,8 +18,6 @@ class CreateOrderService {
       throw new AppError('Order not found');
     }
 
-    console.log(order);
-
     const { total } = order.courses.reduce(
       (accumulator, course) => {
         accumulator.total += Number(course.price);

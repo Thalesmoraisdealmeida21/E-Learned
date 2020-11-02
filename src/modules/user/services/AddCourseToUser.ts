@@ -60,6 +60,8 @@ class CreateUserService {
         }
         return false;
       });
+
+      return false;
     });
 
     const userCourses = await this.usersCoursesRepository.addCourseToUser(
