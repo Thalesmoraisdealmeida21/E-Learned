@@ -68,7 +68,6 @@ export default class PagarmeProvider implements IPaymentProvider {
       });
 
       if (transactionCreated.status === 'refused') {
-        console.log('entrou aki');
         throw new AppError('Transaction Refused');
       }
     } catch (err) {

@@ -11,10 +11,7 @@ class ListAllUserService {
   ) {}
 
   public async execute(userId: string): Promise<Order[]> {
-    console.log(userId);
     const orders = await this.orderRepository.findByUser(userId);
-
-    console.log(orders);
 
     const orderWithTotal = orders.map(ord => {
       const { total } = ord.courses.reduce(
