@@ -21,7 +21,34 @@ class CourseRepository implements ICoursesRepository {
   }
 
   public async listAllCourses(): Promise<Course[]> {
-    const courses = await this.ormRepository.find();
+    const courses = await this.ormRepository.find({
+      where: {
+        active: true,
+      },
+    });
+
+    return courses;
+  }
+
+  public async desactivate(id: string): Promise<void> {
+    const course = await this.ormRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (course) {
+      course.active = false;
+      await this.ormRepository.save(course);
+    }
+  }
+
+  public async listAllCoursesPublic(): Promise<Course[]> {
+    const courses = await this.ormRepository.find({
+      where: {
+        active: true,
+      },
+    });
 
     return courses;
   }
@@ -34,6 +61,7 @@ class CourseRepository implements ICoursesRepository {
     const course = await this.ormRepository.findOne({
       where: {
         id,
+        active: true,
       },
     });
 
@@ -46,6 +74,7 @@ class CourseRepository implements ICoursesRepository {
     const courses = await this.ormRepository.find({
       where: {
         id: In(userCourses),
+        active: true,
       },
     });
 

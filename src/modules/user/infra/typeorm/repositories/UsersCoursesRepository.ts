@@ -13,6 +13,12 @@ class UsersCourseRepository implements IUsersCoursesRepository {
     this.ormRepository = getRepository(UsersCourses);
   }
 
+  public async deleteCourse(course_id: string): Promise<void> {
+    await this.ormRepository.delete({
+      course_id,
+    });
+  }
+
   public async resetLimit(course_id: string, user_id: string): Promise<void> {
     const courseToReset = await this.ormRepository.findOne({
       where: {

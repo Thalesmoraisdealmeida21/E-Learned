@@ -7,12 +7,14 @@ const courseRouter = Router();
 
 courseRouter.post('/', ensureAuthenticate, courseController.create);
 courseRouter.get('/', ensureAuthenticate, courseController.index);
+courseRouter.get('/public', courseController.indexPublic);
 courseRouter.put(
   '/update/:course_id',
   ensureAuthenticate,
   courseController.update,
 );
 courseRouter.get('/:id', ensureAuthenticate, courseController.findOne);
+courseRouter.delete('/:courseId', ensureAuthenticate, courseController.delete);
 
 courseRouter.get(
   '/admin/:id',

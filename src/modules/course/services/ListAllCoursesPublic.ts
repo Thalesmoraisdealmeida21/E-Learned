@@ -9,14 +9,15 @@ class CreateUserService {
     private coursesRepository: ICoursesRepository,
   ) {}
 
-  public async execute(): Promise<
-    | Course[]
-    | undefined
-    | { id: string; name: string; resume: string; description: string }
-  > {
+  public async execute(): Promise<Course[] | undefined> {
     const courses = await this.coursesRepository.listAllCourses();
 
-    return courses;
+    const coursNew = courses.map(cors => {
+      const coursReturn = { ...cors, videoLink: 'inacessivel' };
+      return coursReturn;
+    });
+
+    return coursNew;
   }
 }
 

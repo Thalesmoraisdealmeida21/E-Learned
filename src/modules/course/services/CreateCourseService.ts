@@ -7,6 +7,7 @@ interface IRequest {
   description: string;
   price: string;
   videoLink: string;
+  resume: string;
 }
 
 @injectable()
@@ -21,12 +22,14 @@ class CreateUserService {
     description,
     price,
     videoLink,
+    resume,
   }: IRequest): Promise<Course | undefined> {
     const course = await this.coursesRepository.create({
       name,
       description,
       price: Number(price),
       videoLink,
+      resume,
     });
 
     return course;

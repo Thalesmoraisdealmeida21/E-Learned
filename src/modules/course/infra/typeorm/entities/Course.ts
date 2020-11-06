@@ -22,7 +22,13 @@ class Course {
   @Column()
   price: number;
 
-  @ManyToMany(() => Course)
+  @Column()
+  active: boolean;
+
+  @Column()
+  resume: string;
+
+  @ManyToMany(() => Course, { onDelete: 'CASCADE' })
   @JoinTable({
     name: 'users_courses',
     joinColumn: {

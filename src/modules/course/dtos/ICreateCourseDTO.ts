@@ -3,4 +3,5 @@ export default interface ICreateCourseDTO {
   description?: string;
   price: number;
   videoLink: string;
+  resume: string;
 }

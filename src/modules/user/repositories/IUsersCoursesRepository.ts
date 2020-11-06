@@ -12,4 +12,5 @@ export default interface IUsersCoursesRepository {
   ): Promise<UsersCourses[]>;
   updateLimitAccess(course_id: string, user_id: string): Promise<void>;
   resetLimit(course_id: string, user_id: string): Promise<void>;
+  deleteCourse(course_id: string): Promise<void>;
 }

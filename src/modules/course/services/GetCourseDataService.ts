@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import IUsersCoursesRepository from '@modules/user/repositories/IUsersCoursesRepository';
 import AppError from '@shared/errors/AppError';
-import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
+import IUsersRepository from '@modules/user/repositories/IUsersRepository';
 import ICoursesRepository from '../repository/ICoursesRepository';
 
 interface IRequest {
