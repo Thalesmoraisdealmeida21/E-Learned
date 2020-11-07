@@ -6,6 +6,8 @@ import courseRouter from '@modules/course/infra/http/routes/course.routes';
 
 import orderRouter from '@modules/order/infra/http/routes/order.routes';
 
+import depoimentRouter from '@modules/depoiment/infra/http/routes/depoiments.routes';
+
 const routes = Router();
 
 routes.use('/users', usersRouter);
@@ -13,5 +15,6 @@ routes.use('/posts', postsRouter);
 routes.use('/auth', authRouter);
 routes.use('/courses', courseRouter);
 routes.use('/orders', orderRouter);
+routes.use('/depoiments', depoimentRouter);
 
 export default routes;

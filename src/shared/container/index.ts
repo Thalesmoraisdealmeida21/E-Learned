@@ -19,6 +19,9 @@ import OrderRepository from '@modules/order/infra/typeorm/repositories/OrderRepo
 import IOrderCoursesRepository from '@modules/order/repositories/IOrderCoursesRepository';
 import OrderCoursesRepository from '@modules/order/infra/typeorm/repositories/OrderCoursesRepository';
 
+import IDepoimentsRepository from '@modules/depoiment/repositories/IDepoimentsRepository';
+import DepoimentsRepository from '@modules/depoiment/infra/typeorm/repositorires/DepoimentsRepository';
+
 import IMailProvider from './providers/MailProvider/models/IMailProvider';
 import mailsProvider from './providers/MailProvider';
 
@@ -31,6 +34,11 @@ import PagarmeProvider from './providers/PaymentProvider/implementation/PagarmeP
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IDepoimentsRepository>(
+  'DepoimentsRepository',
+  DepoimentsRepository,
 );
 
 container.registerSingleton<IOrderCoursesRepository>(

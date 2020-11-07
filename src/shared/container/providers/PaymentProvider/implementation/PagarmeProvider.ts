@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import pagarme from 'pagarme';
 import ICreateTransaction from '@modules/order/dtos/ICreateTransaction';
 
@@ -47,17 +48,23 @@ export default class PagarmeProvider implements IPaymentProvider {
       api_key: process.env.APP_PAGARME_ENCRYPTION_KEY,
     });
 
-    const transactionCreated = await client.transactions.create({
-      card_hash,
-      amount,
-      customer,
-      payment_method,
-      billing,
-      items,
-    });
+    let transactionCreated;
 
-    if (transactionCreated.status === 'refused') {
-      throw new AppError('Transaction Refused');
+    try {
+      transactionCreated = await client.transactions.create({
+        card_hash,
+        amount,
+        customer,
+        payment_method,
+        billing,
+        items,
+      });
+
+      if (transactionCreated.status === 'refused') {
+        throw new AppError('Transaction Refused');
+      }
+    } catch (err) {
+      console.log(err.response);
     }
 
     return transactionCreated;
