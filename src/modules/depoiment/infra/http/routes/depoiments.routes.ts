@@ -9,6 +9,7 @@ depoimentRouter.put('/:id', ensureAuthenticate, depoimentController.update);
 depoimentRouter.post('/', ensureAuthenticate, depoimentController.create);
 
 depoimentRouter.get('/', depoimentController.index);
+depoimentRouter.get('/:idDepoiment', depoimentController.findOne);
 
 depoimentRouter.delete(
   '/:depoimentId',

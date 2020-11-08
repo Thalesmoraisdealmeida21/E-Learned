@@ -5,6 +5,8 @@ import CreateDepoimentService from '@modules/depoiment/services/CreateDepoimentS
 import DeleteDepoimentService from '@modules/depoiment/services/DeleteDepoimentService';
 import UpdateDepoimentService from '@modules/depoiment/services/UpdateDepoimentService';
 
+import ListOneDepoiment from '@modules/depoiment/services/ListOneDepoiment';
+
 import ListAllDepoiments from '@modules/depoiment/services/ListAllDepoiments';
 
 export default class UserController {
@@ -35,6 +37,18 @@ export default class UserController {
     const listDepoiments = container.resolve(ListAllDepoiments);
 
     const depoimentsFound = await listDepoiments.execute();
+
+    return response.json(depoimentsFound);
+  }
+
+  public async findOne(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const listOneDepoiment = container.resolve(ListOneDepoiment);
+    const { idDepoiment } = request.params;
+
+    const depoimentsFound = await listOneDepoiment.execute(idDepoiment);
 
     return response.json(depoimentsFound);
   }
