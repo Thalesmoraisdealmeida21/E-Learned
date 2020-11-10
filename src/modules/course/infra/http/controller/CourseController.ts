@@ -73,7 +73,7 @@ export default class UserController {
   public async update(request: Request, response: Response): Promise<Response> {
     const { course_id } = request.params;
     const user_id = request.user.id;
-    const { name, description, price, videoLink } = request.body;
+    const { name, description, price, videoLink, resume } = request.body;
 
     const updateCourse = container.resolve(UpdateCourse);
 
@@ -84,6 +84,7 @@ export default class UserController {
       name,
       price,
       videoLink,
+      resume,
     });
 
     return response.json(courseUpdated);

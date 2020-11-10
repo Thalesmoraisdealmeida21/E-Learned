@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { IUsersRepository } from '@modules/user/repositories/IUsersRepository';
+import IUsersRepository from '@modules/user/repositories/IUsersRepository';
 import Course from '@modules/course/infra/typeorm/entities/Course';
 import ICoursesRepository from '../repository/ICoursesRepository';
 
@@ -11,6 +11,7 @@ interface IRequest {
   price: number;
   videoLink: string;
   user_id: string;
+  resume: string;
 }
 
 @injectable()
@@ -30,6 +31,7 @@ class UpdateCourse {
     name,
     price,
     videoLink,
+    resume,
   }: IRequest): Promise<Course | undefined> {
     const course = await this.coursesRepository.findOne(course_id);
     const user = await this.usersRepository.findByUuid(user_id);
@@ -50,6 +52,9 @@ class UpdateCourse {
     course.description = description;
     course.price = price;
     course.videoLink = videoLink;
+    course.resume = resume;
+
+    console.log(resume);
 
     return this.coursesRepository.save(course);
   }
