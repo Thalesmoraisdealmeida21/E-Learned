@@ -30,6 +30,16 @@ class PostRepository implements IPostRepository {
     return postFound;
   }
 
+  public async findByName(name: string): Promise<Post | undefined> {
+    const postFound = await this.ormRepository.findOne({
+      where: {
+        name,
+      },
+    });
+
+    return postFound;
+  }
+
   public async delete(id: string): Promise<void> {
     await this.ormRepository.delete(id);
   }

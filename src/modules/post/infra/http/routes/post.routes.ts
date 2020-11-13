@@ -13,6 +13,7 @@ const postRouter = Router();
 const upload = multer(uploadConfig);
 
 postRouter.post('/', ensureAuthenticate, postController.create);
+postRouter.get('/post/:name', postController.findByName);
 postRouter.get('/', postController.index);
 postRouter.get('/:id', postController.findOne);
 postRouter.put('/:id', ensureAuthenticate, postController.update);

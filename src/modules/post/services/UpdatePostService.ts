@@ -38,16 +38,15 @@ class UpdatePostService {
       throw new AppError('This post not found');
     }
 
+    if (post.image) {
+      this.storageProvider.deleteFile(post.image);
+    }
     post.name = name;
     post.category = category;
     post.description = description;
     post.resume = resume;
     post.facebookLink = facebookLink;
     post.image = image;
-
-    if (image) {
-      this.storageProvider.deleteFile(post.image);
-    }
 
     const postSaved = await this.postsRepository.save(post);
 

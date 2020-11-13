@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import CreatePostService from '@modules/post/services/CreatePostService';
 import ListPostService from '@modules/post/services/ListAllPosts';
 import GetOnePost from '@modules/post/services/GetOnePostService';
+import GetPostByNameService from '@modules/post/services/GetPostByNameService';
 import UpdatePostService from '@modules/post/services/UpdatePostService';
 import UploadPostImage from '@modules/post/services/UploadPostImageService';
 
@@ -54,6 +55,30 @@ export default class PostController {
     return response.json(post);
   }
 
+  public async findByName(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const getOne = container.resolve(GetPostByNameService);
+
+    const { name } = request.params;
+
+    const nameArray = name.split('-');
+
+    let nameFormattedTemp = '';
+
+    nameArray.forEach(item => {
+      nameFormattedTemp += ` ${item}`;
+    });
+    const nameFormatted = nameFormattedTemp.replace(' ', '');
+
+    console.log(nameFormatted);
+
+    const post = await getOne.execute(nameFormatted);
+
+    return response.json(post);
+  }
+
   public async uploadImage(
     request: Request,
     response: Response,
@@ -79,7 +104,14 @@ export default class PostController {
   public async update(request: Request, response: Response): Promise<Response> {
     const updatePost = container.resolve(UpdatePostService);
     const { id } = request.params;
-    const { name, description, resume, facebookLink, category } = request.body;
+    const {
+      name,
+      description,
+      resume,
+      facebookLink,
+      category,
+      image,
+    } = request.body;
 
     const postUpdated = await updatePost.execute({
       id,
@@ -88,6 +120,7 @@ export default class PostController {
       resume,
       facebookLink,
       category,
+      image,
     });
 
     return response.json(postUpdated);
