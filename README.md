@@ -40,7 +40,7 @@ Tabela de conteúdos
    * [Sobre o projeto](#-sobre-o-projeto)
    * [Funcionalidades](#-funcionalidades)
    * [Tecnologias](#-tecnologias)
-   * [Como excutar ?](#Como-executar-o-projeto)
+   * [Como executar ?](#-como-executar-o-projeto)
    * [Como contribuir no projeto](#-como-contribuir-no-projeto)
    * [Autor](#-autor)
    * [Licença](#user-content--licença)
