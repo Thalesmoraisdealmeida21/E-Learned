@@ -164,7 +164,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Typeorm](https://typeorm.io/)**
 -   **[PostgreSQL](https://www.postgresql.org/)**
 -   **[ts-node](https://github.com/TypeStrong/ts-node)**
--   **[dotENV](https://github.com/motdotla/dotenv)**
 -   **[Multer](https://github.com/expressjs/multer)**
 
 
