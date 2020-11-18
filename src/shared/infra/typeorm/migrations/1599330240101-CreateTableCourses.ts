@@ -24,6 +24,11 @@ export default class CreateTableCourses1599330240101
             type: 'text',
             isNullable: true,
           },
+          {
+            name: 'resume',
+            type: 'varchar',
+            isNullable: true,
+          },
 
           {
             name: 'price',
