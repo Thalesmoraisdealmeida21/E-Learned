@@ -103,6 +103,14 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/).
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
 
+## Banco de dados
+Para que a aplicação execute corretamente é necessário configurar o banco de dados.
+
+Para isto renomeie o arquivo ormconfig.example.json e edite o mesmo com as credenciais do seu banco de dados
+
+<b>OBS: É necessário configurar o .env tanto para aplicação front-end quanto para a back-end</b>
+
+
 #### 🎲 Rodando o Backend (Este repositório)
 
 ```bash
